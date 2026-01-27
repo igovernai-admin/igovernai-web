@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iGovernAI™ - Govern Before You Innovate™</title>
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0066cc;
+            --primary-dark: #0052a3;
+            --secondary-color: #1a1a2e;
+            --accent-color: #00d4ff;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+            --border-color: #e0e0e0;
+            --success-color: #28a745;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Header/Navigation */
+        header {
+            background: #000000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        nav {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-end;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #b9913f;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+            max-width: 200px;
+        }
+
+        .logo .logo-text {
+            display: inline;
+        }
+
+        .logo img.loaded ~ .logo-text {
+            display: none;
+        }
+
+        .nav-cta {
+            display: inline-block;
+            background: transparent;
+            color: #b9913f;
+            padding: 0.5rem 1.5rem;
+            border: 2px solid #b9913f;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
+            box-shadow: 0 2px 8px rgba(185, 145, 63, 0.2);
+        }
+
+        .nav-cta:hover {
+            background: #b9913f;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(185, 145, 63, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') no-repeat bottom;
+            background-size: cover;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero h1 .ai-highlight {
+            color: #b9913f;
+            font-style: italic;
+        }
+
+        .hero .subheadline {
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
+        .hero .tagline {
+            font-size: 1rem;
+            font-weight: 600;
+            opacity: 0.9;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: transparent;
+            color: #b9913f;
+            padding: 0.5rem 1.5rem;
+            border: 2px solid #b9913f;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
+            box-shadow: 0 2px 8px rgba(185, 145, 63, 0.2);
+        }
+
+        .hero-cta:hover {
+            background: #b9913f;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(185, 145, 63, 0.3);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 5rem 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Problem Statement */
+        .problem {
+            background: var(--bg-white);
+        }
+
+        .problem h2 {
+            font-size: 2.2rem;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            text-align: center;
+            line-height: 1.1;
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .problem-content {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            padding: 0 2rem 2rem 2rem;
+        }
+
+        .problem-content p {
+            margin-bottom: 0.75rem;
+        }
+
+        .problem-content p:first-of-type {
+            margin-bottom: 0.25rem;
+        }
+
+        .problem-form-wrapper {
+            position: sticky;
+            top: 100px;
+        }
+
+        /* Solution Section */
+        .solution {
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+            color: white;
+        }
+
+        .solution h2 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .solution-intro {
+            max-width: 800px;
+            margin: 0.5rem auto 3rem;
+            font-size: 1.15rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+        }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+            perspective: 1000px;
+        }
+
+        .benefit-card {
+            background: transparent;
+            min-height: 400px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+
+        .benefit-card:hover {
+            transform: rotateY(180deg);
+        }
+
+        .benefit-card-front,
+        .benefit-card-back {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: visible;
+        }
+
+        .benefit-card-front {
+            background: white;
+            transform: rotateY(0deg);
+        }
+
+        .benefit-card-back {
+            background: #b9913f;
+            transform: rotateY(180deg);
+        }
+
+        .benefit-card-front .benefit-icon {
+            color: #b9913f;
+        }
+
+        .benefit-card-front h3 {
+            color: #000000;
+        }
+
+        .benefit-card-front p {
+            color: #000000;
+        }
+
+        .benefit-card-back .benefit-icon {
+            color: #ffffff;
+        }
+
+        .benefit-card-back h3 {
+            color: #ffffff;
+        }
+
+        .benefit-card-back p {
+            color: #ffffff;
+        }
+
+        .benefit-icon {
+            margin-bottom: 1.5rem;
+            color: #b9913f;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            transition: color 0.3s;
+        }
+
+        .benefit-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .benefit-card-front h3,
+        .benefit-card-back h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .benefit-card-front p,
+        .benefit-card-back p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .benefit-card-front p:last-of-type,
+        .benefit-card-back p:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .benefit-card-front ul,
+        .benefit-card-back ul {
+            margin-top: 1rem;
+            margin-bottom: 0;
+            padding-bottom: 0.5rem;
+        }
+
+        .benefit-card-front ul li,
+        .benefit-card-back ul li {
+            line-height: 1.3;
+            margin-bottom: 0.4rem;
+        }
+
+        .benefit-card-front ul li:last-child,
+        .benefit-card-back ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .benefit-card-front ul li {
+            color: #000000 !important;
+        }
+
+        .benefit-card-back ul li {
+            color: #ffffff !important;
+        }
+
+        .benefit-card-front h3,
+        .benefit-card-front p,
+        .benefit-card-front ul li {
+            color: #000000 !important;
+        }
+
+        /* Lead Capture Form */
+        .lead-capture {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 5rem 2rem;
+        }
+
+        .lead-capture h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .lead-capture .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            background: white;
+            padding: 0 2.5rem 2.5rem 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(185, 145, 63, 0.25);
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #b9913f;
+        }
+
+        /* Custom Dropdown */
+        .custom-dropdown {
+            position: relative;
+            width: 100%;
+        }
+
+        .custom-dropdown select {
+            display: none;
+        }
+
+        .custom-dropdown-button {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            color: var(--text-primary);
+            cursor: pointer;
+            text-align: left;
+            position: relative;
+            transition: border-color 0.3s;
+        }
+
+        .custom-dropdown-button::after {
+            content: '▼';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            transition: transform 0.3s;
+        }
+
+        .custom-dropdown-button.open::after {
+            transform: translateY(-50%) rotate(180deg);
+        }
+
+        .custom-dropdown-button:hover {
+            border-color: #9d7a35;
+        }
+
+        .custom-dropdown-button:focus {
+            outline: none;
+            border-color: #b9913f;
+        }
+
+        .custom-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            margin-top: 0.25rem;
+            overflow: hidden;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .custom-dropdown-menu.open {
+            display: block;
+        }
+
+        .custom-dropdown-option {
+            padding: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            color: var(--text-primary);
+        }
+
+        .custom-dropdown-option:hover {
+            background: #b9913f;
+            color: white;
+        }
+
+        .custom-dropdown-option.selected {
+            background: #b9913f;
+            color: white;
+        }
+
+        .form-cta {
+            width: 100%;
+            background: #b9913f;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+            margin-top: 1rem;
+        }
+
+        .form-cta:hover {
+            background: #9d7a35;
+            transform: translateY(-2px);
+        }
+
+        .trust-indicators {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .trust-indicators span {
+            margin: 0 1rem;
+            display: inline-block;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--bg-white);
+            padding: 5rem 2rem;
+        }
+
+        .testimonials h2 {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: var(--secondary-color);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: var(--bg-light);
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .testimonial-quote {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .testimonial-role {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            background: #000000;
+            color: white;
+            padding: 3rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #b9913f;
+        }
+
+        .footer-cta {
+            background: transparent;
+            color: #b9913f;
+            padding: 0.8rem 1.5rem;
+            border: 2px solid #b9913f;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 1rem;
+            transition: transform 0.3s, background 0.3s, color 0.3s;
+        }
+
+        .footer-cta:hover {
+            background: #b9913f;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: var(--success-color);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        /* How This Is Different Section */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            nav {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subheadline {
+                font-size: 1.2rem;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            section {
+                padding: 3rem 1.5rem;
+            }
+
+            .form-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .benefits {
+                grid-template-columns: 1fr;
+            }
+
+            .problem-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .problem-form-wrapper {
+                position: static;
+            }
+
+            .problem h2 {
+                font-size: 2rem;
+            }
+
+            .solution h2 {
+                font-size: 2rem;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            #what-you-get > .container > div[style*="grid-template-columns"] {
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Scroll to Top Button */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: #b9913f;
+            color: white;
+            border: 2px solid #b9913f;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(185, 145, 63, 0.3);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .scroll-to-top.show {
+            display: flex;
+        }
+
+        .scroll-to-top:hover {
+            background: #9d7a35;
+            border-color: #9d7a35;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(185, 145, 63, 0.4);
+        }
+
+        .scroll-to-top svg {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+            fill: none;
+            stroke-width: 2.5;
+        }
+
+        @media (max-width: 768px) {
+            .scroll-to-top {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <img src="assets/images/logo.png" alt="iGovernAI™ Logo" onload="this.classList.add('loaded');" onerror="this.style.display='none';">
+                <span class="logo-text">iGovernAI™</span>
+            </a>
+            <div class="nav-links">
+                <a href="#lead-capture">AI Audit</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#what-you-get">What We Deliver</a>
+                <a href="#why-different">Why We're Different</a>
+                <a href="#who-empowers">Who We Empower</a>
+            </div>
+            <a href="#lead-capture" class="nav-cta">Get in touch</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Wherever <span class="ai-highlight">AI</span> Exists, Oversight<br>Must Exist Too.</h1>
+                <p class="subheadline">iGovernAI™ is the operational control layer that keeps AI usable without turning scale into chaos.</p>
+                <a href="#lead-capture" class="hero-cta">Get Early Access</a>
+            </div>
+        </div>
+        <!-- Optional: Add hero image/illustration here -->
+        <!-- <img src="hero-illustration.svg" alt="AI Governance" style="max-width: 100%; margin-top: 3rem;"> -->
+    </section>
+
+    <!-- Problem Statement -->
+    <section class="problem" id="lead-capture">
+        <div class="container">
+            <div class="problem-grid">
+                <div class="problem-content">
+                    <h2 style="text-align: left; margin-top: 0;">Govern Before You Innovate™</h2>
+                    <p>Deploying AI without oversight doesn't just introduce risk.</p>
+                    <p>It creates <strong>drift</strong>.</p>
+                    <p>When AI spreads faster than ownership and structure, organizations <strong>lose visibility, boundaries, and accountability</strong> - long before anyone notices the damage.</p>
+                    <p>Outputs are trusted without verification. Data moves without control. Decisions are influenced without ownership.</p>
+                    <p>For <strong>innovators, operators, and organizations of every kind</strong>, iGovernAI™ embeds oversight directly into the workflow - so AI stays <strong>visible, bounded, owned, verified, and defensible</strong> as it scales.</p>
+                    <p>Not because regulation demands it.<br>Because AI in production demands control.</p>
+                    <p style="margin-top: 1.5rem; font-weight: 500;">Fill out the form to schedule a consultation to discuss your Govern Before You Innovate™ AI Audit</p>
+                </div>
+                <div class="problem-form-wrapper">
+                    <div class="form-container">
+                        <div class="success-message" id="success-message">
+                            Thank you! We've received your request. Our team will be in touch shortly.
+                        </div>
+                        <form id="lead-form" style="padding-top: 2.5rem;">
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="company">Company *</label>
+                                <input type="text" id="company" name="company" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="role">Role *</label>
+                                <div class="custom-dropdown">
+                                    <select id="role" name="role" required>
+                                        <option value="">Select your role</option>
+                                        <option value="executive">C-Suite Executive</option>
+                                        <option value="compliance">Compliance Officer</option>
+                                        <option value="cto">CTO / Technology Leader</option>
+                                        <option value="ai-lead">AI/ML Leader</option>
+                                        <option value="legal">Legal Counsel</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                    <div class="custom-dropdown-button" id="role-button">Select your role</div>
+                                    <div class="custom-dropdown-menu" id="role-menu">
+                                        <div class="custom-dropdown-option" data-value="">Select your role</div>
+                                        <div class="custom-dropdown-option" data-value="executive">C-Suite Executive</div>
+                                        <div class="custom-dropdown-option" data-value="compliance">Compliance Officer</div>
+                                        <div class="custom-dropdown-option" data-value="cto">CTO / Technology Leader</div>
+                                        <div class="custom-dropdown-option" data-value="ai-lead">AI/ML Leader</div>
+                                        <div class="custom-dropdown-option" data-value="legal">Legal Counsel</div>
+                                        <div class="custom-dropdown-option" data-value="other">Other</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="form-cta">Get in touch</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="solution" id="how-it-works">
+        <div class="container" style="text-align: center;">
+            <h2 style="text-align: center; color: #ffffff;">How the AI Audit Works</h2>
+            <p style="max-width: 800px; margin: 1rem auto 3rem; font-size: 1.15rem; line-height: 1.8; color: rgba(255, 255, 255, 0.9); text-align: center;">
+                A focused operational review designed to surface reality and produce clarity.
+            </p>
+            <div style="width: 100%; max-width: 1800px; margin: 3rem auto 0; display: grid; grid-template-columns: repeat(4, 400px); gap: 3rem; justify-content: center;">
+                <div style="text-align: center;">
+                    <div style="font-size: 1.8rem; font-weight: 700; color: #ffffff; background: #b9913f; margin: 0 auto 1rem; width: 60px; height: 60px; border: 2px solid #b9913f; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0;">1</div>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: #ffffff; font-weight: 700; line-height: 1.2;">Deep Dive Into Your AI Reality</h3>
+                    <p style="font-size: 1rem; line-height: 1.6; color: rgba(255, 255, 255, 0.9);">Review how AI is used across workflows, not how it's documented. Identify dependencies influencing decisions and automation.</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.8rem; font-weight: 700; color: #ffffff; background: #b9913f; margin: 0 auto 1rem; width: 60px; height: 60px; border: 2px solid #b9913f; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0;">2</div>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: #ffffff; font-weight: 700; line-height: 1.2;">Surface Drift, Gaps, and Exposure</h3>
+                    <p style="font-size: 1rem; line-height: 1.6; color: rgba(255, 255, 255, 0.9);">Identify where ownership is unclear, boundaries are missing, or AI influence goes unverified. Highlights hidden risk before scaling.</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.8rem; font-weight: 700; color: #ffffff; background: #b9913f; margin: 0 auto 1rem; width: 60px; height: 60px; border: 2px solid #b9913f; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0;">3</div>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: #ffffff; font-weight: 700; line-height: 1.2;">Determine What's Safe to Innovate</h3>
+                    <p style="font-size: 1rem; line-height: 1.6; color: rgba(255, 255, 255, 0.9);">Classify AI use cases by readiness: safe to expand, requires controls, or should pause. Innovation is guided, not blocked.</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="font-size: 1.8rem; font-weight: 700; color: #ffffff; background: #b9913f; margin: 0 auto 1rem; width: 60px; height: 60px; border: 2px solid #b9913f; border-radius: 50%; display: flex; align-items: center; justify-content: center; line-height: 1; padding: 0;">4</div>
+                    <h3 style="font-size: 1.2rem; margin-bottom: 1rem; color: #ffffff; font-weight: 700; line-height: 1.2;">Receive Your AI Audit Report</h3>
+                    <p style="font-size: 1rem; line-height: 1.6; color: rgba(255, 255, 255, 0.9);">Clear view of your current AI posture, ownership gaps, and control needs. Includes practical next steps for safe innovation and automation.</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#lead-capture" class="hero-cta">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- What We Deliver Section -->
+    <section class="problem" id="what-you-get">
+        <div class="container">
+            <h2 style="margin-bottom: 0.5rem;">Your AI Control Baseline</h2>
+            <p class="solution-intro" style="max-width: 1000px; margin: 0.5rem auto 3rem; font-size: 1.15rem; line-height: 1.8; color: var(--text-secondary); text-align: center; white-space: nowrap;">
+                A grounded view of where AI operates today, and where structure is required to move forward safely.
+            </p>
+            <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;">
+                <div style="color: var(--text-secondary); font-size: 1rem; line-height: 1.8;">
+                    <p style="margin-bottom: 1.5rem;">
+                        This audit delivers a grounded, operational view of how AI is actually being used inside your organization today. You'll gain clear visibility into where AI shows up in real workflows, where hidden dependency or drift is emerging, and where risk is accumulating without ownership or control.
+                    </p>
+                    <p style="margin-bottom: 1.5rem;">
+                        More importantly, it separates safe-to-experiment use cases from those that require structure first, highlighting concrete gaps in ownership, boundaries, and oversight. The result is not theory or compliance noise, but a practical snapshot of your AI governance reality—paired with clear, actionable next steps you can act on immediately.
+                    </p>
+                </div>
+                <div>
+                    <ul style="list-style: none; padding: 0; color: var(--text-secondary); font-size: 1rem;">
+                        <li style="margin-bottom: 1.5rem; padding-left: 2rem; position: relative; line-height: 1.6;">
+                            <span style="position: absolute; left: 0; color: #b9913f; font-weight: 700; font-size: 1.2rem;">✓</span>
+                            <strong style="color: var(--secondary-color); display: block; line-height: 1.2; margin-bottom: 0;">Where AI exists in current workflows</strong>
+                            <span style="display: block; line-height: 1.6;">A clear map of AI usage across teams, tools, and processes.</span>
+                        </li>
+                        <li style="margin-bottom: 1.5rem; padding-left: 2rem; position: relative; line-height: 1.6;">
+                            <span style="position: absolute; left: 0; color: #b9913f; font-weight: 700; font-size: 1.2rem;">✓</span>
+                            <strong style="color: var(--secondary-color); display: block; line-height: 1.2; margin-bottom: 0;">Where AI drift, hidden dependency, or risk is likely</strong>
+                            <span style="display: block; line-height: 1.6;">Identification of areas where AI is operating without proper boundaries or ownership.</span>
+                        </li>
+                        <li style="margin-bottom: 1.5rem; padding-left: 2rem; position: relative; line-height: 1.6;">
+                            <span style="position: absolute; left: 0; color: #b9913f; font-weight: 700; font-size: 1.2rem;">✓</span>
+                            <strong style="color: var(--secondary-color); display: block; line-height: 1.2; margin-bottom: 0;">Which AI use cases are safe to experiment with now</strong>
+                            <span style="display: block; line-height: 1.6;">Clear guidance on where innovation can proceed with confidence.</span>
+                        </li>
+                        <li style="margin-bottom: 1.5rem; padding-left: 2rem; position: relative; line-height: 1.6;">
+                            <span style="position: absolute; left: 0; color: #b9913f; font-weight: 700; font-size: 1.2rem;">✓</span>
+                            <strong style="color: var(--secondary-color); display: block; line-height: 1.2; margin-bottom: 0;">Where ownership, boundaries, or controls are missing</strong>
+                            <span style="display: block; line-height: 1.6;">Specific gaps that need attention before scaling.</span>
+                        </li>
+                        <li style="margin-bottom: 1.5rem; padding-left: 2rem; position: relative; line-height: 1.6;">
+                            <span style="position: absolute; left: 0; color: #b9913f; font-weight: 700; font-size: 1.2rem;">✓</span>
+                            <strong style="color: var(--secondary-color); display: block; line-height: 1.2; margin-bottom: 0;">Clear, practical next steps</strong>
+                            <span style="display: block; line-height: 1.6;">Actionable recommendations without bureaucracy or compliance overhead.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why iGovernAI Is Different Section -->
+    <section class="solution" id="why-different">
+        <div class="container">
+            <h2 style="color: #ffffff; text-align: center;">Why We're Different</h2>
+            <p class="solution-intro" style="max-width: 800px; margin: 0.5rem auto 3rem; font-size: 1.15rem; line-height: 1.8; color: rgba(255, 255, 255, 0.9); text-align: center;">
+                Built by practitioners working at the intersection of AI, operations, and risk.
+            </p>
+            <div class="benefits" style="margin-top: 3rem;">
+                <div class="benefit-card">
+                    <div class="benefit-card-front">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/>
+                                <path d="M18 2h1a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2h-1"/>
+                                <path d="M5 2H4a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h1"/>
+                                <path d="M12 6v4"/>
+                                <path d="M12 14v4"/>
+                            </svg>
+                        </div>
+                        <h3>Built for Workflows, Not Documents</h3>
+                        <p>Traditional "AI governance" lives in policies, training decks, and one-time approvals.</p>
+                        <p>iGovernAI™ lives inside workflows, where AI is actually used. Controls are applied at the moment AI is introduced, not after something breaks.</p>
+                    </div>
+                    <div class="benefit-card-back">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/>
+                                <path d="M18 2h1a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2h-1"/>
+                                <path d="M5 2H4a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h1"/>
+                                <path d="M12 6v4"/>
+                                <path d="M12 14v4"/>
+                            </svg>
+                        </div>
+                        <h3>Operational Control, Not Policy Theater</h3>
+                        <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                            <li style="padding-left: 1.5rem; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ffffff; font-weight: 700;">•</span>
+                                Workflow-level visibility instead of static policies
+                            </li>
+                            <li style="padding-left: 1.5rem; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ffffff; font-weight: 700;">•</span>
+                                Ongoing control instead of annual reviews
+                            </li>
+                            <li style="padding-left: 1.5rem; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ffffff; font-weight: 700;">•</span>
+                                Real usage enforcement instead of "assumed compliance"
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-card-front">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <h3>Clear Ownership, Real Accountability</h3>
+                        <p>Most AI risk exists because AI is "everyone's tool and nobody's responsibility."</p>
+                        <p>iGovernAI™ assigns ownership by function and workflow, not by title. Every AI use case has a human owner when stakes exist.</p>
+                    </div>
+                    <div class="benefit-card-back">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <h3>Named Owners, Not Implied Responsibility</h3>
+                        <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                            <li style="padding-left: 1.5rem; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ffffff; font-weight: 700;">•</span>
+                                Named owners for AI usage (even in small teams)
+                            </li>
+                            <li style="padding-left: 1.5rem; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ffffff; font-weight: 700;">•</span>
+                                Decision rights and escalation paths built in
+                            </li>
+                            <li style="padding-left: 1.5rem; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ffffff; font-weight: 700;">•</span>
+                                Proof of accountability, not implied responsibility
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-card-front">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                            </svg>
+                        </div>
+                        <h3>Designed to Enable Innovation, Not Block It</h3>
+                        <p>iGovernAI™ does not say "no" to AI.</p>
+                        <p>It defines where AI is safe to experiment and where controls must exist. This prevents AI drift before it becomes invisible dependence.</p>
+                    </div>
+                    <div class="benefit-card-back">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                            </svg>
+                        </div>
+                        <h3>Guardrails, Not Restrictions</h3>
+                        <ul style="list-style: none; padding: 0; margin-top: 1rem;">
+                            <li style="padding-left: 1.5rem; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ffffff; font-weight: 700;">•</span>
+                                Guardrails instead of blanket restrictions
+                            </li>
+                            <li style="padding-left: 1.5rem; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ffffff; font-weight: 700;">•</span>
+                                Risk-based controls instead of one-size-fits-all rules
+                            </li>
+                            <li style="padding-left: 1.5rem; position: relative;">
+                                <span style="position: absolute; left: 0; color: #ffffff; font-weight: 700;">•</span>
+                                Innovation that scales without surprises
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="problem" id="who-empowers">
+        <div class="container">
+            <h2 style="color: var(--secondary-color); margin-bottom: 0.5rem;">Who iGovernAI™ Empowers</h2>
+            <p class="solution-intro" style="margin-top: 0.5rem; color: var(--text-secondary);">
+                Supporting innovators, operators, and organizations as they turn ideas into reliable outcomes.
+            </p>
+            <div class="benefits">
+                <div class="benefit-card">
+                    <div class="benefit-card-front">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                            </svg>
+                        </div>
+                        <h3>Innovators Build with AI without creating future chaos</h3>
+                        <p>iGovernAI™ gives innovators the freedom to experiment while enforcing boundaries, ownership, and verification so prototypes don't turn into ungoverned production systems.</p>
+                    </div>
+                    <div class="benefit-card-back">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                            </svg>
+                        </div>
+                        <h3>Innovators Build with AI without creating future chaos</h3>
+                        <p>iGovernAI™ gives innovators the freedom to experiment while enforcing boundaries, ownership, and verification so prototypes don't turn into ungoverned production systems.</p>
+                    </div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-card-front">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/>
+                                <path d="M18 2h1a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2h-1"/>
+                                <path d="M5 2H4a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h1"/>
+                                <path d="M12 6v4"/>
+                                <path d="M12 14v4"/>
+                            </svg>
+                        </div>
+                        <h3>Operators Run AI inside real workflows with control and oversight</h3>
+                        <p>iGovernAI™ embeds oversight directly into day-to-day operations, ensuring AI usage is visible, bounded, and accountable as it moves through teams, tools, and decisions.</p>
+                    </div>
+                    <div class="benefit-card-back">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2Z"/>
+                                <path d="M18 2h1a2 2 0 0 1 2 2v18a2 2 0 0 1-2 2h-1"/>
+                                <path d="M5 2H4a2 2 0 0 0-2 2v18a2 2 0 0 0 2 2h1"/>
+                                <path d="M12 6v4"/>
+                                <path d="M12 14v4"/>
+                            </svg>
+                        </div>
+                        <h3>Operators Run AI inside real workflows with control and oversight</h3>
+                        <p>iGovernAI™ embeds oversight directly into day-to-day operations, ensuring AI usage is visible, bounded, and accountable as it moves through teams, tools, and decisions.</p>
+                    </div>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-card-front">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                                <path d="M3 9h18"/>
+                                <path d="M9 21V9"/>
+                            </svg>
+                        </div>
+                        <h3>Organizations Scale AI without losing trust or control</h3>
+                        <p>iGovernAI™ provides the operational authority layer organizations need to govern AI across the enterprise proving oversight, enforcing standards, and adapting as AI usage evolves.</p>
+                    </div>
+                    <div class="benefit-card-back">
+                        <div class="benefit-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"/>
+                                <path d="M3 9h18"/>
+                                <path d="M9 21V9"/>
+                            </svg>
+                        </div>
+                        <h3>Organizations Scale AI without losing trust or control</h3>
+                        <p>iGovernAI™ provides the operational authority layer organizations need to govern AI across the enterprise proving oversight, enforcing standards, and adapting as AI usage evolves.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Reinforcement -->
+    <section class="solution" id="ready-to-govern">
+        <div class="container" style="text-align: center;">
+            <div style="max-width: 1000px; margin: 0 auto; padding: 3rem 4rem; border: 2px solid #b9913f; border-radius: 10px; text-align: center; background: #b9913f;">
+                <h2 style="margin-bottom: 1.5rem; color: #ffffff; text-align: center;">Ready to Govern Before You Innovate?</h2>
+                <p class="solution-intro" style="margin-bottom: 2.5rem; color: rgba(255, 255, 255, 0.95);">
+                    Complete the AI Audit to understand where AI is safe to move—and where it isn't yet.
+                </p>
+                <a href="#lead-capture" class="hero-cta" style="border-color: #ffffff; color: #ffffff; background: transparent;">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>iGovernAI™</h3>
+                <p>Govern Before You Innovate™</p>
+            </div>
+            <div class="footer-section">
+                <h3>Offering</h3>
+                <a href="#lead-capture">AI Audit</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#what-you-get">What We Deliver</a>
+                <a href="#why-different">Why We're Different</a>
+                <a href="#who-empowers">Who We Empower</a>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <a href="privacy-policy.html">Privacy Policy</a>
+                <a href="terms-of-service.html">Terms of Service</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <a href="mailto:contact@igovernai.com">contact@igovernai.com</a>
+                <a href="#lead-capture">Request Information</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 iGovernAI™. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <script>
+        // Google Apps Script Web App URL
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyZJzqDo6K4VXM_cA_1_1J3znuhBVqEkUThXWT_lZ-YGmw6olIMDNQZxRnnxbctRZMmsw/exec';
+        
+        // Form submission handler
+        document.getElementById('lead-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                company: document.getElementById('company').value,
+                role: document.getElementById('role').value
+            };
+
+            // Show loading state (optional - you can add a loading spinner here)
+            const submitButton = this.querySelector('.form-cta');
+            const originalButtonText = submitButton.textContent;
+            submitButton.textContent = 'Submitting...';
+            submitButton.disabled = true;
+
+            // Send data to Google Sheets via Google Apps Script
+            // Using a hidden form submission to avoid CORS issues
+            if (GOOGLE_SCRIPT_URL && GOOGLE_SCRIPT_URL !== 'YOUR_GOOGLE_SCRIPT_URL_HERE') {
+                // Create a hidden form and submit it
+                const hiddenForm = document.createElement('form');
+                hiddenForm.method = 'POST';
+                hiddenForm.action = GOOGLE_SCRIPT_URL;
+                hiddenForm.target = 'hidden_iframe';
+                hiddenForm.style.display = 'none';
+                
+                // Add form fields
+                const fields = ['name', 'email', 'company', 'role'];
+                fields.forEach(field => {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = field;
+                    input.value = formData[field] || '';
+                    hiddenForm.appendChild(input);
+                });
+                
+                // Create hidden iframe to receive response
+                let iframe = document.getElementById('hidden_iframe');
+                if (!iframe) {
+                    iframe = document.createElement('iframe');
+                    iframe.id = 'hidden_iframe';
+                    iframe.name = 'hidden_iframe';
+                    iframe.style.display = 'none';
+                    document.body.appendChild(iframe);
+                }
+                
+                // Append form to body and submit
+                document.body.appendChild(hiddenForm);
+                hiddenForm.submit();
+                
+                // Clean up form after a short delay
+                setTimeout(() => {
+                    document.body.removeChild(hiddenForm);
+                }, 1000);
+                
+                // Show success message (we can't verify with this method, but it usually works)
+                document.getElementById('success-message').classList.add('show');
+                
+                // Reset form
+                this.reset();
+                
+                // Reset custom dropdown
+                roleButton.textContent = 'Select your role';
+                roleOptions.forEach(opt => opt.classList.remove('selected'));
+                roleOptions[0].classList.add('selected');
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    document.getElementById('success-message').classList.remove('show');
+                }, 5000);
+                
+                // Restore button state
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            } else {
+                // Fallback: just show success message if Google Script URL is not configured
+                console.log('Form submitted (Google Sheets not configured):', formData);
+                document.getElementById('success-message').classList.add('show');
+                this.reset();
+                roleButton.textContent = 'Select your role';
+                roleOptions.forEach(opt => opt.classList.remove('selected'));
+                roleOptions[0].classList.add('selected');
+                
+                setTimeout(() => {
+                    document.getElementById('success-message').classList.remove('show');
+                }, 5000);
+                
+                submitButton.textContent = originalButtonText;
+                submitButton.disabled = false;
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Custom Dropdown functionality
+        const roleButton = document.getElementById('role-button');
+        const roleMenu = document.getElementById('role-menu');
+        const roleSelect = document.getElementById('role');
+        const roleOptions = roleMenu.querySelectorAll('.custom-dropdown-option');
+
+        roleButton.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const isOpen = roleMenu.classList.contains('open');
+            
+            // Close all dropdowns
+            document.querySelectorAll('.custom-dropdown-menu').forEach(menu => {
+                menu.classList.remove('open');
+            });
+            document.querySelectorAll('.custom-dropdown-button').forEach(btn => {
+                btn.classList.remove('open');
+            });
+            
+            // Toggle this dropdown
+            if (!isOpen) {
+                roleMenu.classList.add('open');
+                roleButton.classList.add('open');
+            }
+        });
+
+        roleOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const value = this.getAttribute('data-value');
+                const text = this.textContent;
+                
+                // Update select value
+                roleSelect.value = value;
+                
+                // Update button text
+                roleButton.textContent = text;
+                roleButton.classList.remove('open');
+                roleMenu.classList.remove('open');
+                
+                // Update selected state
+                roleOptions.forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                // Trigger change event for form validation
+                roleSelect.dispatchEvent(new Event('change'));
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.custom-dropdown')) {
+                document.querySelectorAll('.custom-dropdown-menu').forEach(menu => {
+                    menu.classList.remove('open');
+                });
+                document.querySelectorAll('.custom-dropdown-button').forEach(btn => {
+                    btn.classList.remove('open');
+                });
+            }
+        });
+
+        // Initialize selected option on load
+        if (roleSelect.value) {
+            const selectedOption = roleMenu.querySelector(`[data-value="${roleSelect.value}"]`);
+            if (selectedOption) {
+                roleButton.textContent = selectedOption.textContent;
+                selectedOption.classList.add('selected');
+            }
+        }
+
+        // Scroll to Top functionality
+        const scrollToTopButton = document.getElementById('scrollToTop');
+        
+        // Show/hide button based on scroll position
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollToTopButton.classList.add('show');
+            } else {
+                scrollToTopButton.classList.remove('show');
+            }
+        });
+
+        // Scroll to top when button is clicked
+        scrollToTopButton.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
+
