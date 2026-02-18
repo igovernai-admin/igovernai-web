@@ -118,6 +118,36 @@
             box-shadow: 0 3px 10px rgba(185, 145, 63, 0.3);
         }
 
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+            padding: 0.5rem;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
         /* Hero Section */
         .hero {
             background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
@@ -718,23 +748,60 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            header {
+                padding: 0.75rem 0;
+            }
+
             nav {
-                flex-wrap: wrap;
-                gap: 1rem;
+                padding: 0 1.5rem;
+                position: relative;
+            }
+
+            .hamburger {
+                display: flex;
+                order: 2;
+            }
+
+            .nav-cta {
+                display: none;
+            }
+
+            .logo {
+                order: 1;
             }
 
             .nav-links {
-                order: 3;
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-                gap: 1rem;
-                padding-top: 1rem;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: #000000;
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1.5rem 2rem;
+                gap: 0;
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease, opacity 0.3s ease;
+                opacity: 0;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                max-height: 500px;
+                opacity: 1;
             }
 
             .nav-links a {
-                font-size: 0.85rem;
+                font-size: 1rem;
+                padding: 1rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                text-align: left;
+            }
+
+            .nav-links a:last-child {
+                border-bottom: none;
             }
 
             .hero h1 {
@@ -1081,7 +1148,12 @@
                 <img src="assets/images/logo.png" alt="iGovernAI™ Logo" onload="this.classList.add('loaded');" onerror="this.style.display='none';">
                 <span class="logo-text">iGovernAI™</span>
             </a>
-            <div class="nav-links">
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-links" id="navLinks">
                 <a href="#lead-capture">AI Audit</a>
                 <a href="#how-it-works">How It Works</a>
                 <a href="#what-you-get">What We Deliver</a>
@@ -1723,6 +1795,33 @@
             }
         });
 
+        // Hamburger Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+
+        if (hamburger && navLinks) {
+            hamburger.addEventListener('click', function() {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when clicking on a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function() {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                });
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }
+            });
+        }
+
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -1733,6 +1832,11 @@
                         behavior: 'smooth',
                         block: 'start'
                     });
+                    // Close mobile menu if open
+                    if (hamburger && navLinks) {
+                        hamburger.classList.remove('active');
+                        navLinks.classList.remove('active');
+                    }
                 }
             });
         });
