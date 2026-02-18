@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building Operational Control for AI at Scale - iGovernAI™</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0066cc;
+            --primary-dark: #0052a3;
+            --secondary-color: #1a1a2e;
+            --accent-color: #00d4ff;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+            --border-color: #e0e0e0;
+            --success-color: #28a745;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-white);
+        }
+
+        /* Header/Navigation */
+        header {
+            background: #000000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        nav {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-end;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #b9913f;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+            max-width: 200px;
+        }
+
+        .logo .logo-text {
+            display: inline;
+        }
+
+        .logo img.loaded ~ .logo-text {
+            display: none;
+        }
+
+        .nav-cta {
+            display: inline-block;
+            background: transparent;
+            color: #b9913f;
+            padding: 0.5rem 1.5rem;
+            border: 2px solid #b9913f;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
+            box-shadow: 0 2px 8px rgba(185, 145, 63, 0.2);
+        }
+
+        .nav-cta:hover {
+            background: #b9913f;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(185, 145, 63, 0.3);
+        }
+
+        /* Article Container */
+        .article-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .article-category {
+            font-size: 0.85rem;
+            color: #b9913f;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 1rem;
+        }
+
+        .article-image-container {
+            position: relative;
+            width: 100%;
+            margin: 3rem 0 2rem 0;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .article-image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .article-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .article-image-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .image-banner {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(185, 145, 63, 0.95), rgba(185, 145, 63, 0.85));
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            transition: background 0.3s;
+        }
+
+        .article-image-container:hover .image-banner {
+            background: linear-gradient(to top, rgba(185, 145, 63, 1), rgba(185, 145, 63, 0.95));
+        }
+
+        .article-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .article-content h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .article-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .article-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.75rem;
+        }
+
+        .article-content strong {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid #b9913f;
+            padding-left: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #b9913f;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #9d7a35;
+        }
+
+
+        /* Footer */
+        footer {
+            background: #000000;
+            color: white;
+            padding: 3rem 2rem 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #b9913f;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-wrap: wrap;
+                gap: 1rem;
+                padding: 0 2rem;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .article-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.75rem;
+            }
+
+            .article-content h3 {
+                font-size: 1.35rem;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .image-banner {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="iGovernAI™ Logo" onload="this.classList.add('loaded');" onerror="this.style.display='none';">
+                <span class="logo-text">iGovernAI™</span>
+            </a>
+            <div class="nav-links">
+                <a href="../index.html#lead-capture">AI Audit</a>
+                <a href="../index.html#how-it-works">How It Works</a>
+                <a href="../index.html#what-you-get">What We Deliver</a>
+                <a href="../index.html#why-different">Why We're Different</a>
+                <a href="../index.html#who-empowers">Who We Empower</a>
+                <a href="../index.html#insights">Insights</a>
+            </div>
+            <a href="../index.html#lead-capture" class="nav-cta">Get Started</a>
+        </nav>
+    </header>
+
+    <!-- Article Content -->
+    <div class="article-container">
+        <a href="../index.html#insights" class="back-link">
+            ← Back to Insights
+        </a>
+
+        <div class="article-header">
+            <div class="article-category">Featured</div>
+            <h1 class="article-title">Building Operational Control for AI at Scale</h1>
+            <div class="article-meta">
+                <span>Published: February 18, 2026</span>
+                <span>Author: iGovernAI™ Team</span>
+            </div>
+        </div>
+
+        <div class="article-image-container">
+            <a href="../assets/documents/Control Plane Whitepaper - 22026.pdf" target="_blank" class="article-image-link" rel="noopener noreferrer">
+                <img src="../assets/images/whitepaper.png" alt="Enterprise AI Orchestration Whitepaper" class="article-image" onerror="this.style.display='none';">
+                <div class="image-banner">Read Full Report</div>
+            </a>
+        </div>
+
+        <article class="article-content">
+            <h2>ABSTRACT</h2>
+            <p>Enterprise artificial intelligence stands at a critical inflection point. While model capabilities have advanced dramatically, the fundamental challenge to widespread adoption in regulated industries - healthcare, financial services, and government - is not technological sophistication but architectural trust. This whitepaper examines the emergence of governance-native AI infrastructure through the lens of the intelligent control plane: an operational framework that transforms compliance from procedural oversight into technical enforcement.</p>
+
+            <p>The analysis reveals a fundamental architectural tension: first-generation enterprise AI systems prioritized accessibility and rapid deployment over governance, auditability, and enforceable compliance. This design philosophy proves inadequate for regulated environments where data exposure, policy violations, and accountability gaps create unacceptable institutional risk. Traditional approaches to AI governance - periodic audits, reactive monitoring, and procedural controls cannot constrain systems operating at machine speed across distributed infrastructure.</p>
+
+            <p>We document the architectural evolution toward control-plane-centric orchestration, where governance operates as a native layer mediating every interaction between data, identity, policy, and computation. Key mechanisms include pre-computation data sanitization preventing sensitive information exposure, continuous enforcement of authorization boundaries, real-time policy execution translating regulatory requirements into machine-enforceable constraints, immutable audit trails providing cryptographically verifiable evidence of system behavior, and hierarchical authority structures mirroring organizational accountability frameworks.</p>
+
+            <p>Early implementations demonstrate that embedded governance enables rather than constrains innovation. Organizations report efficiency improvements of 30-60 percent in process-intensive workflows while experiencing reduced compliance incidents and accelerated approval cycles. This challenges the conventional assumption that regulatory compliance and technological innovation exist in unavoidable tension. When governance is architected rather than procedural, speed to deployment and risk mitigation become mutually reinforcing.</p>
+
+            <p>The whitepaper examines sector-specific transformation pathways across healthcare (clinical documentation automation, research acceleration, decision support), financial services (fraud detection, regulatory reporting, AML surveillance), and government (citizen services, intelligence synthesis, policy analysis). In each domain, the control plane architecture enables capabilities that were previously impossible to deploy safely at scale.</p>
+
+            <p><strong>Our central finding is unambiguous: the next era of enterprise AI will be defined not by advances in model capability but by the maturity of governance architecture. Organizations that embed trust mechanisms into AI infrastructure, making governance an architectural primitive rather than a procedural afterthought, will capture transformative value while maintaining the institutional accountability that regulated industries demand.</strong></p>
+
+            <p>Those that treat governance as secondary will find themselves unable to progress beyond cautious experimentation, watching as architectural leaders establish insurmountable competitive advantages.</p>
+
+            <h2>EXECUTIVE SUMMARY</h2>
+            <p>Artificial intelligence has reached a critical inflection point in enterprise adoption. Organizations worldwide are transitioning from experimental pilots to production deployment, seeking measurable improvements in productivity, operational efficiency, decision quality, and service delivery excellence.</p>
+
+            <p>Yet this transition unfolds unevenly across sectors, with the most significant divergence appearing in highly regulated industries, including healthcare, financial services, and the public sector.</p>
+
+            <p>In these environments, the potential value of AI is transformative, but the tolerance for failure remains minimal. Clinical errors can cost lives. Financial miscalculations can trigger regulatory sanctions or systemic instability. Government data breaches can compromise national security and erode public trust. The stakes create an asymmetry that defines the modern AI adoption challenge.</p>
+
+            <h3>The Core Tension</h3>
+            <p>This asymmetry produces a defining structural tension between two irreconcilable forces:</p>
+            <ul>
+                <li><strong>On one side:</strong> The accelerating capability of generative and predictive AI systems, with unprecedented reasoning depth, contextual understanding, and automation potential</li>
+                <li><strong>On the other:</strong> The immovable reality of regulatory accountability, data protection mandates, audit requirements, and the institutional obligation to maintain public trust</li>
+            </ul>
+            <p>The result is not simple resistance to innovation, but a deeper architectural problem rooted in fundamental design incompatibility.</p>
+
+            <h3>Architectural Challenge</h3>
+            <p>Most first-generation enterprise AI deployments were architected for speed, accessibility, and rapid experimentation and not for governance, evidentiary auditability, or enforceable compliance.</p>
+
+            <p>These systems prioritized time-to-value over trust-by-design, creating deployment patterns that work effectively in low-stakes environments but become liabilities when applied to regulated data and mission-critical workflows.</p>
+
+            <p>As organizations attempt to scale AI into sensitive environments, they encounter foundational questions that traditional architectures cannot adequately address:</p>
+            <ul>
+                <li>How can sensitive data power AI insights without exposure beyond approved boundaries?</li>
+                <li>How can regulatory policies be enforced proactively, before computation, rather than audited reactively after the fact?</li>
+                <li>How can institutions produce tamper-proof, legally defensible evidence of compliant system behavior?</li>
+                <li>How can AI innovation accelerate without proportionally increasing organizational risk exposure?</li>
+                <li>How can organizations balance the need for cutting-edge capability with the requirement for institutional control?</li>
+            </ul>
+            <p>These questions point toward an emerging architectural paradigm that is fundamentally reshaping enterprise AI: the intelligent control plane.</p>
+
+            <h3>The Control Plane Paradigm Shift</h3>
+            <p>In this model, governance transitions from an external monitoring function to a native operational layer that mediates every interaction between data, identity, policy, and computation.</p>
+
+            <p>The control plane operates as the authoritative governance infrastructure, ensuring that AI systems function not as autonomous tools but as controlled, auditable components within defined trust boundaries.</p>
+
+            <p>Key architectural characteristics include:</p>
+            <ul>
+                <li><strong>Data sanitization and protection</strong> occurring before any AI model interaction, preventing exposure of protected information</li>
+                <li><strong>Continuous, real-time enforcement</strong> of identity, permission, and policy boundaries throughout execution</li>
+                <li><strong>Immutable, cryptographically verifiable audit trails</strong> that provide legal-grade evidence of system behavior</li>
+                <li><strong>Policy-as-code implementation</strong> that transforms regulatory requirements into machine-enforceable constraints</li>
+                <li><strong>Zero-trust architecture</strong> ensuring that trust is continuously verified rather than assumed</li>
+            </ul>
+
+            <p>This architectural foundation transforms the strategic calculus of AI adoption. Rather than treating compliance and innovation as competing priorities, governance-native infrastructure makes them mutually reinforcing.</p>
+
+            <h3>Measurable Impact and Value Realization</h3>
+            <p>Early implementations of governance-native AI orchestration demonstrate compelling evidence that embedded enforcement and auditability can unlock substantial efficiency gains without proportional increases in regulatory exposure or operational risk.</p>
+
+            <p>Organizations deploying intelligent control plane architectures report:</p>
+            <ul>
+                <li>Efficiency improvements ranging from 68% to 91% in process-intensive workflows, particularly in documentation, regulatory reporting, and compliance operations</li>
+                <li>Significant reductions in compliance review cycles due to continuous enforcement replacing periodic audits</li>
+                <li>Accelerated executive approval for AI initiatives as technical controls provide measurable risk mitigation</li>
+                <li>Enhanced regulatory relationships as demonstrable compliance mechanisms replace assurance-based governance</li>
+                <li>Decreased incident rates related to data exposure, unauthorized access, and policy violations</li>
+            </ul>
+
+            <p>These outcomes challenge the long-standing assumption that compliance and innovation exist in unavoidable tension. When governance is embedded architecturally rather than layered procedurally, it becomes an enabler of innovation rather than a constraint upon it.</p>
+
+            <h2>Industry-Specific Transformation Pathways</h2>
+            <p>The impact of governed AI varies by sector, but common patterns emerge across regulated industries:</p>
+
+            <h3>Healthcare and Life Sciences</h3>
+            <p>For healthcare providers, governance-native AI infrastructure enables safe deployment of clinical intelligence without compromising patient privacy or regulatory compliance.</p>
+
+            <p>Key applications include:</p>
+            <ul>
+                <li>Automated clinical documentation that reduces administrative burden while maintaining HIPAA compliance</li>
+                <li>Research acceleration through secure analysis of protected health information across institutional boundaries</li>
+                <li>Clinical decision support that augments provider judgment without introducing liability exposure</li>
+                <li>Drug discovery and clinical trial optimization leveraging sensitive patient data under strict governance</li>
+            </ul>
+
+            <h3>Financial Services</h3>
+            <p>For financial institutions, intelligent control planes support machine-speed defense against evolving threats while maintaining regulatory compliance:</p>
+            <ul>
+                <li>Real-time fraud detection with explainable decision pathways that satisfy audit requirements</li>
+                <li>Automated regulatory reporting aligned with SOC 2, PCI DSS, and regional requirements</li>
+                <li>Anti-money laundering surveillance operating at transaction volume and velocity</li>
+                <li>Customer service automation within provable compliance boundaries</li>
+            </ul>
+
+            <h3>Government and Public Sector</h3>
+            <p>For government agencies, control-plane governance provides the foundation for digital modernization that preserves democratic accountability:</p>
+            <ul>
+                <li>Citizen service automation with comprehensive audit trails for transparency</li>
+                <li>Intelligence synthesis across classified environments with strict access controls</li>
+                <li>Policy analysis and simulation supporting evidence-based decision-making</li>
+                <li>Cross-agency collaboration with maintained data sovereignty and jurisdictional boundaries</li>
+            </ul>
+
+            <h2>THE INTELLIGENT CONTROL PLANE</h2>
+            <h3>Authority, Enforcement, and Verifiable Trust</h3>
+            <p>If orchestration represents the structural backbone of enterprise AI, the control plane represents its governing intelligence. Within distributed computing architectures, control planes traditionally coordinate configuration, policy enforcement, and system state management. In the context of regulated AI, this concept expands significantly, becoming the primary mechanism through which organizational authority, regulatory compliance, and institutional accountability are enforced across all intelligent workloads.</p>
+
+            <p>Understanding this evolution is essential to understanding how AI can safely operate inside institutions where failure carries consequences extending beyond operational metrics to legal liability, public trust, and human welfare.</p>
+
+            <p>The intelligent control plane transforms governance from periodic oversight into continuous system function, validating inputs before processing, enforcing permissions during execution, and recording outcomes immutably after completion. This closed-loop model ensures that no AI action exists outside governed boundaries.</p>
+
+            <p>Key capabilities of the intelligent control plane include:</p>
+            <ul>
+                <li><strong>Hierarchical authority management</strong> supporting multi-tenant isolation and role-based access</li>
+                <li><strong>Proactive enforcement</strong> through data sanitization and real-time policy execution</li>
+                <li><strong>Identity and session management</strong> ensuring continuous authentication</li>
+                <li><strong>Resource governance</strong> preventing runaway consumption</li>
+                <li><strong>Immutable auditability</strong> providing cryptographically verifiable evidence of system behavior</li>
+            </ul>
+
+            <h2>CONCLUSION</h2>
+            <h3>The Path Forward for Regulated Industries</h3>
+            <p>Artificial intelligence stands at a defining moment. The technology has matured beyond experimental curiosity to become infrastructure with transformative potential across every sector of the economy. Yet this potential remains largely unrealized in the environments where it could deliver the greatest societal value: healthcare, financial services, and government.</p>
+
+            <p>The barrier is not capability - models can reason, analyze, and generate with unprecedented sophistication. The barrier is trust. Regulated institutions require more than powerful technology; they require trustworthy technology that can operate safely within legal, ethical, and institutional boundaries.</p>
+
+            <p>The intelligent control plane architecture addresses this requirement by embedding governance into the operational foundation of enterprise AI. When enforcement precedes computation, when audit records are immutable, when policies execute as code rather than guidance, AI transforms from experimental tool to trusted institutional capability.</p>
+
+            <h3>Strategic Imperatives</h3>
+            <p>Organizations seeking to capture AI value in regulated environments should prioritize:</p>
+            <ul>
+                <li><strong>Architectural Assessment:</strong> Evaluate existing AI initiatives against governance-native architecture principles. Identify gaps in data protection, policy enforcement, auditability, and identity management.</li>
+                <li><strong>Governance-First Roadmap:</strong> Sequence AI deployment to establish control plane infrastructure before scaling use cases. Resist pressure to deploy capabilities that cannot be governed effectively.</li>
+                <li><strong>Cross-Functional Alignment:</strong> Bridge technical, legal, compliance, and operational stakeholders around shared governance framework. AI success requires organizational consensus, not just technical capability.</li>
+                <li><strong>Measurement and Evidence:</strong> Establish metrics demonstrating both AI value and compliance assurance. Track efficiency gains alongside incident reduction, audit outcomes, and regulatory engagement quality.</li>
+                <li><strong>Continuous Evolution:</strong> Recognize that governance requirements will evolve as regulations mature and AI capabilities advance. Build adaptive architecture rather than point solutions.</li>
+            </ul>
+
+            <h3>The Competitive Imperative</h3>
+            <p>The next decade will separate regulated industry leaders from laggards based on a single capability: the ability to deploy AI safely at scale. Organizations that master governance-native architecture will innovate continuously and confidently. Those that do not will watch from the sidelines as competitive gaps become unbridgeable.</p>
+
+            <p>The question facing institutional leaders is not whether to adopt AI, that decision has been made by competitive and operational necessity. The question is whether to adopt AI with governance as an afterthought or governance as foundation.</p>
+
+            <p><strong>The difference will determine which organizations thrive in the intelligent enterprise era.</strong></p>
+        </article>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>iGovernAI™</h3>
+                <p>Govern Before You Innovate™</p>
+            </div>
+            <div class="footer-section">
+                <h3>Offering</h3>
+                <a href="../index.html#lead-capture">AI Audit</a>
+                <a href="../index.html#how-it-works">How It Works</a>
+                <a href="../index.html#what-you-get">What We Deliver</a>
+                <a href="../index.html#why-different">Why We're Different</a>
+                <a href="../index.html#who-empowers">Who We Empower</a>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <a href="../privacy-policy.html">Privacy Policy</a>
+                <a href="../terms-of-service.html">Terms of Service</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <a href="mailto:contact@igovernai.com">contact@igovernai.com</a>
+                <a href="../index.html#lead-capture">Request Information</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 iGovernAI™. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
+

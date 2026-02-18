@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>You Didn't Mean to Build a Risk Engine - iGovernAI™</title>
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0066cc;
+            --primary-dark: #0052a3;
+            --secondary-color: #1a1a2e;
+            --accent-color: #00d4ff;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --bg-light: #f8f9fa;
+            --bg-white: #ffffff;
+            --border-color: #e0e0e0;
+            --success-color: #28a745;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-white);
+        }
+
+        /* Header/Navigation */
+        header {
+            background: #000000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        nav {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-end;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #b9913f;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+            max-width: 200px;
+        }
+
+        .logo .logo-text {
+            display: inline;
+        }
+
+        .logo img.loaded ~ .logo-text {
+            display: none;
+        }
+
+        .nav-cta {
+            display: inline-block;
+            background: transparent;
+            color: #b9913f;
+            padding: 0.5rem 1.5rem;
+            border: 2px solid #b9913f;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s, background 0.3s, color 0.3s;
+            box-shadow: 0 2px 8px rgba(185, 145, 63, 0.2);
+        }
+
+        .nav-cta:hover {
+            background: #b9913f;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 3px 10px rgba(185, 145, 63, 0.3);
+        }
+
+        /* Article Container */
+        .article-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .article-header {
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .article-category {
+            font-size: 0.85rem;
+            color: #b9913f;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .article-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 1rem;
+        }
+
+        .article-image-container {
+            position: relative;
+            width: 100%;
+            margin: 2rem 0;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .article-image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .article-image {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+
+        .article-image-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .image-banner {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(185, 145, 63, 0.95), rgba(185, 145, 63, 0.85));
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            transition: background 0.3s;
+        }
+
+        .article-image-container:hover .image-banner {
+            background: linear-gradient(to top, rgba(185, 145, 63, 1), rgba(185, 145, 63, 0.95));
+        }
+
+        .article-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .article-content h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .article-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+
+        .article-content h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin: 1.5rem 0;
+            padding-left: 2rem;
+        }
+
+        .article-content li {
+            margin-bottom: 0.75rem;
+        }
+
+        .article-content strong {
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .article-content blockquote {
+            border-left: 4px solid #b9913f;
+            padding-left: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--text-secondary);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #b9913f;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #9d7a35;
+        }
+
+
+        /* Footer */
+        footer {
+            background: #000000;
+            color: white;
+            padding: 3rem 2rem 2rem;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #b9913f;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-wrap: wrap;
+                gap: 1rem;
+                padding: 0 2rem;
+            }
+
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1rem;
+                padding-top: 1rem;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            .article-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .article-title {
+                font-size: 2rem;
+            }
+
+            .article-content h2 {
+                font-size: 1.75rem;
+            }
+
+            .article-content h3 {
+                font-size: 1.35rem;
+            }
+
+            .article-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .image-banner {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="../index.html" class="logo">
+                <img src="../assets/images/logo.png" alt="iGovernAI™ Logo" onload="this.classList.add('loaded');" onerror="this.style.display='none';">
+                <span class="logo-text">iGovernAI™</span>
+            </a>
+            <div class="nav-links">
+                <a href="../index.html#lead-capture">AI Audit</a>
+                <a href="../index.html#how-it-works">How It Works</a>
+                <a href="../index.html#what-you-get">What We Deliver</a>
+                <a href="../index.html#why-different">Why We're Different</a>
+                <a href="../index.html#who-empowers">Who We Empower</a>
+                <a href="../index.html#insights">Insights</a>
+            </div>
+            <a href="../index.html#lead-capture" class="nav-cta">Get Started</a>
+        </nav>
+    </header>
+
+    <!-- Article Content -->
+    <div class="article-container">
+        <a href="../index.html#insights" class="back-link">
+            ← Back to Insights
+        </a>
+
+        <div class="article-header">
+            <div class="article-category">Risk Management</div>
+            <h1 class="article-title">You Didn't Mean to Build a Risk Engine</h1>
+            <div class="article-meta">
+                <span>Published: February 16, 2026</span>
+                <span>Author: Nikki Mehrpoo</span>
+            </div>
+        </div>
+
+        <article class="article-content">
+            <h2>The Innovator Standard of Care for AI Governance in Regulated Workflows</h2>
+            <p style="font-size: 1.2rem; font-weight: 600; color: var(--secondary-color); margin-bottom: 2rem;">Protect Those You Serve, Including Yourself.</p>
+            <p style="margin-bottom: 1rem;"><strong>Nikki Mehrpoo × Jason Gelsomino</strong></p>
+            <p style="margin-bottom: 2rem; color: var(--text-secondary);">(EEE AI: Educate · Empower · Elevate)</p>
+
+            <h2>The Moment We Keep Seeing After AI Deployment in Regulated Industries</h2>
+            <p>It usually happens right after a demo.</p>
+
+            <p>The product is solid.</p>
+            <p>The AI feature works.</p>
+            <p>The workflow is faster.</p>
+            <p>The use case is clear.</p>
+
+            <p>The innovator is excited — because they should be.</p>
+
+            <p>Then the questions change.</p>
+
+            <p>Not questions about model accuracy.</p>
+            <p>Not questions about performance.</p>
+            <p>Not questions about scalability.</p>
+
+            <p>Questions about what happens after AI adoption — inside workflows used by licensed professionals in regulated industries.</p>
+
+            <p>And the room changes.</p>
+
+            <p>Not because anyone did something wrong.</p>
+            <p>But because most AI products aren't built for what actually happens after deployment in regulated environments.</p>
+
+            <p>They're built for speed.</p>
+
+            <p>And in regulated industries, speed is not a neutral improvement.</p>
+
+            <p>Speed changes how humans verify.</p>
+            <p>Speed changes how uncertainty is communicated.</p>
+            <p>Speed changes how records are formed.</p>
+            <p>Speed changes how much people rely on outputs that look finished.</p>
+
+            <p>In regulated work, those shifts matter — because professional responsibility doesn't disappear when work gets faster.</p>
+
+            <p><strong>It concentrates.</strong></p>
+
+            <h2>The Core Reality Innovators Must Accept About AI Governance</h2>
+            <p>If your AI product touches regulated workflows, you are not building "an AI feature."</p>
+
+            <p>You are building an AI system that can influence:</p>
+            <ul>
+                <li>sensitive or protected data</li>
+                <li>regulated communications</li>
+                <li>official records</li>
+                <li>professional judgment</li>
+                <li>downstream reliance</li>
+                <li>real people and real outcomes</li>
+            </ul>
+
+            <p>That means you are building inside a responsibility-bearing environment — whether you intended to or not.</p>
+
+            <p>You didn't mean to automate responsibility.</p>
+
+            <p>But without AI governance embedded into the workflow, that is exactly what will happen.</p>
+
+            <h2>The Problem Isn't AI. It's What AI Touches in Regulated Workflows</h2>
+            <p>Innovators don't set out to create risk.</p>
+
+            <p>They set out to:</p>
+            <ul>
+                <li>reduce friction</li>
+                <li>clean up messy work</li>
+                <li>summarize information</li>
+                <li>help people respond faster</li>
+                <li>remove administrative drag</li>
+            </ul>
+
+            <p>So AI gets added.</p>
+
+            <p>It drafts.</p>
+            <p>It summarizes.</p>
+            <p>It organizes.</p>
+            <p>It highlights.</p>
+
+            <p>None of that feels dangerous.</p>
+
+            <p>Until you look at where the AI actually sits inside the workflow.</p>
+
+            <p>AI governance is not triggered by the feature type.</p>
+            <p>AI governance is triggered by the environment the feature enters.</p>
+
+            <p>In regulated industries, AI doesn't live in a vacuum.</p>
+            <p>It lives inside workflows that already carry professional and legal responsibility.</p>
+
+            <p>Workflows involving:</p>
+            <ul>
+                <li>confidential or sensitive information</li>
+                <li>regulated communications</li>
+                <li>official records</li>
+                <li>judgment calls made by licensed professionals</li>
+                <li>downstream reliance by teams, regulators, or the public</li>
+            </ul>
+
+            <p>That's where risk begins — long before anyone makes a formal "decision."</p>
+
+            <p>Because responsibility attaches not only to outcomes, but to:</p>
+            <ul>
+                <li>how information is handled</li>
+                <li>how meaning is shaped</li>
+                <li>how records are created</li>
+                <li>how communications are delivered</li>
+                <li>how reliance forms</li>
+            </ul>
+
+            <p>If AI touches any of those, the system has entered the professional responsibility zone.</p>
+
+            <p>That is why AI governance for regulated industries is now a standard of care issue — not a preference.</p>
+
+            <h2>How AI Risk Actually Forms (Before Anyone Notices)</h2>
+            <p>The first exposure isn't judgment.</p>
+
+            <p>It's data.</p>
+
+            <p>Information gets copied.</p>
+            <p>Notes get pasted.</p>
+            <p>Context moves outside the system.</p>
+
+            <p>In regulated workflows, that alone can trigger:</p>
+            <ul>
+                <li>confidentiality failures</li>
+                <li>record-integrity problems</li>
+                <li>loss of provenance</li>
+                <li>inability to later prove what came from where</li>
+            </ul>
+
+            <p>Then comes communication.</p>
+
+            <p>AI rewrites something to sound "more professional."</p>
+            <p>Uncertainty gets smoothed out.</p>
+            <p>Language becomes firmer than intended.</p>
+
+            <p>This isn't cosmetic.</p>
+
+            <p>In regulated contexts, language can:</p>
+            <ul>
+                <li>turn tentative analysis into implied certainty</li>
+                <li>remove cues that something requires review</li>
+                <li>create reliance simply by sounding authoritative</li>
+            </ul>
+
+            <p>Then documentation.</p>
+
+            <p>AI summaries make their way into files.</p>
+            <p>Files become records.</p>
+            <p>Records become evidence.</p>
+
+            <p>In regulated industries, records are not neutral artifacts.</p>
+            <p>Records establish:</p>
+            <ul>
+                <li>what was known</li>
+                <li>what was done</li>
+                <li>when it was done</li>
+                <li>who is accountable</li>
+            </ul>
+
+            <p>So "just a summary" stops being informal the moment it enters a system of record.</p>
+
+            <p>Then reliance.</p>
+
+            <p>People stop double-checking because the AI usually sounds right.</p>
+            <p>The workflow adapts.</p>
+            <p>The AI becomes normal.</p>
+
+            <p>At that point, risk is no longer about one bad output.</p>
+
+            <p>It's structural.</p>
+
+            <p>No alarms.</p>
+            <p>No bad intent.</p>
+            <p>No single moment to point to.</p>
+
+            <p>That's how a risk engine gets built.</p>
+
+            <p>Quietly.</p>
+
+            <p>And critically — this happens even when the AI is correct.</p>
+
+            <p>Because liability in regulated work doesn't come only from wrong answers.</p>
+
+            <p>It comes from misplaced responsibility:</p>
+            <ul>
+                <li>outputs entering records without proper review</li>
+                <li>communications delivered with unintended authority</li>
+                <li>reliance forming without safeguards</li>
+                <li>inability to reconstruct what happened later</li>
+            </ul>
+
+            <p>In regulated environments, "correct" is not always "defensible."</p>
+
+            <h2>Why Speed Becomes Liability in AI-Assisted Professional Work</h2>
+            <p>Speed compresses verification.</p>
+
+            <p>Verification is the core of professional responsibility.</p>
+
+            <p>Licensed professionals are not paid to type faster.</p>
+            <p>They are accountable for:</p>
+            <ul>
+                <li>judgment</li>
+                <li>verification</li>
+                <li>defensibility</li>
+                <li>traceability</li>
+            </ul>
+
+            <p>When AI accelerates output without preserving those obligations, speed becomes exposure.</p>
+
+            <p>This is one of the most consistent AI governance failures in regulated industries:</p>
+            <p><strong>AI makes output faster — while silently removing the verification layer that made the work defensible.</strong></p>
+
+            <h2>AI Governance Impacts More Than the End User</h2>
+            <p>AI doesn't just affect the person using the tool.</p>
+
+            <p>It affects:</p>
+            <ul>
+                <li>the person being served (client, patient, claimant, customer)</li>
+                <li>the licensed professional whose name is on the outcome</li>
+                <li>the organization that deploys the system</li>
+                <li>leadership accountable for results</li>
+                <li>compliance and legal teams</li>
+                <li>regulators and auditors</li>
+                <li>downstream teams who rely on the record</li>
+            </ul>
+
+            <p>When AI enters the workflow, responsibility doesn't disappear.</p>
+
+            <p>It spreads.</p>
+
+            <p>And when responsibility spreads, accountability must be designed — or it will be assigned later by regulators, courts, or auditors.</p>
+
+            <p>That is the difference between:</p>
+            <ul>
+                <li>a helpful product</li>
+                <li>and</li>
+                <li>an accountable AI system</li>
+            </ul>
+
+            <h2>The Innovator Standard of Care for AI Governance</h2>
+            <p>If AI can influence an outcome, it must be governed at the point of influence — not after the fact.</p>
+
+            <p>In regulated industries, AI governance is not optional.</p>
+
+            <p><strong>It is the minimum standard of care for safe, scalable AI adoption.</strong></p>
+
+            <h2>What AI Governance Means (Plain-Language Definition)</h2>
+            <p>AI governance means:</p>
+
+            <p style="font-size: 1.15rem; font-weight: 600; color: var(--secondary-color); margin: 1.5rem 0;">Assigning accountable human authority, embedding workflow controls, and producing evidence — before AI output can influence a regulated outcome.</p>
+
+            <p>AI governance is not training.</p>
+            <p>AI governance is not policy alone.</p>
+            <p>AI governance is not ethics theater.</p>
+
+            <p><strong>AI governance is infrastructure.</strong></p>
+
+            <h2>Minimum Standard of Care Requirements for AI in Regulated Workflows</h2>
+            <p>Any AI product touching regulated workflows must support the following capabilities — directly or through governance infrastructure.</p>
+
+            <h3>1. AI Visibility</h3>
+            <p>The organization must be able to identify:</p>
+            <ul>
+                <li>where AI is used</li>
+                <li>where AI changes meaning</li>
+                <li>where AI touches records</li>
+                <li>where AI shifts responsibility</li>
+            </ul>
+
+            <p>If AI influence cannot be mapped, it cannot be governed.</p>
+
+            <h3>2. Governance Triggers</h3>
+            <p>The system must define when AI governance is mandatory — including when AI touches:</p>
+            <ul>
+                <li>sensitive or protected data</li>
+                <li>regulated communications</li>
+                <li>official records</li>
+                <li>judgment-influencing workflows</li>
+                <li>high-stakes outcomes affecting real people</li>
+            </ul>
+
+            <p>Ambiguity is not flexibility.</p>
+            <p>Ambiguity is liability.</p>
+
+            <h3>3. Role-Based Accountability</h3>
+            <p>When responsibility spreads, accountability must be assigned.</p>
+
+            <p>The system must support:</p>
+            <ul>
+                <li>role-based permissions</li>
+                <li>defined authority boundaries</li>
+                <li>ownership across workflow stages</li>
+            </ul>
+
+            <h3>4. AI Output Handling Controls</h3>
+            <p>The system must support rules for:</p>
+            <ul>
+                <li>what AI output can be used as-is</li>
+                <li>what must be reviewed</li>
+                <li>what must be verified</li>
+                <li>what cannot enter records</li>
+                <li>what must be labeled or tracked</li>
+            </ul>
+
+            <h3>5. Record Integrity & Provenance</h3>
+            <p>If AI output enters a record, the organization must be able to show:</p>
+            <ul>
+                <li>what content was AI-assisted</li>
+                <li>what was human-edited</li>
+                <li>what was approved</li>
+                <li>what became authoritative</li>
+            </ul>
+
+            <p>Because in regulated industries, records become evidence.</p>
+
+            <h3>6. Evidence & Auditability</h3>
+            <p>The organization must be able to reconstruct:</p>
+            <ul>
+                <li>when AI was used</li>
+                <li>by whom</li>
+                <li>in what workflow</li>
+                <li>for what purpose</li>
+                <li>with what controls in place</li>
+            </ul>
+
+            <p>This is what audit-ready AI governance looks like.</p>
+
+            <h2>Why iGovernAI Exists</h2>
+            <p>iGovernAI exists because innovators keep building genuinely helpful AI tools — and regulated organizations keep struggling to deploy them safely.</p>
+
+            <p>Not because AI doesn't work.</p>
+
+            <p>But because no one can clearly answer:</p>
+            <ul>
+                <li>Where does AI influence the workflow?</li>
+                <li>When does AI governance apply?</li>
+                <li>Who is accountable?</li>
+                <li>What safeguards exist?</li>
+                <li>What evidence will exist later?</li>
+            </ul>
+
+            <p>That's not buyer resistance.</p>
+
+            <p>That's a governance gap.</p>
+
+            <h2>The EEE AI Standard of Care</h2>
+            <p>EEE AI is the operational standard of care for AI governance in responsibility-bearing environments.</p>
+
+            <p>It is not a philosophy.</p>
+
+            <p><strong>It is infrastructure.</strong></p>
+
+            <h3>EDUCATE</h3>
+            <p>Make the invisible visible before AI spreads.</p>
+
+            <h3>EMPOWER</h3>
+            <p>Design for real behavior, not ideal behavior.</p>
+
+            <h3>ELEVATE</h3>
+            <p>Make AI something an organization can stand behind.</p>
+
+            <h2>The Principle Under Everything</h2>
+            <p style="font-size: 1.2rem; font-weight: 600; color: var(--secondary-color); margin: 1.5rem 0;">Protect those you serve, including yourself.</p>
+
+            <p>This applies to:</p>
+            <ul>
+                <li>the person affected by the workflow</li>
+                <li>the professional doing the work</li>
+                <li>the organization deploying the system</li>
+            </ul>
+
+            <p>Protecting yourself is not selfish.</p>
+            <p>It is how responsible professionals remain able to serve.</p>
+
+            <h2>The Closing Reality</h2>
+            <p>You didn't mean to build a risk engine.</p>
+
+            <p>But if your AI can:</p>
+            <ul>
+                <li>move data</li>
+                <li>shape communication</li>
+                <li>alter records</li>
+                <li>influence reliance</li>
+                <li>normalize new behavior</li>
+            </ul>
+
+            <p>…and responsibility isn't designed into how it's used…</p>
+
+            <p><strong>That's exactly what you've built.</strong></p>
+
+            <h2>Final Declaration</h2>
+            <p>iGovernAI is building EEE AI infrastructure so innovators can govern before they automate — and scale AI without breaking professional responsibility.</p>
+
+            <p style="font-size: 1.2rem; font-weight: 600; color: var(--secondary-color); margin: 2rem 0;">Protect those you serve, including yourself.</p>
+
+            <h2>Frequently Asked Questions About AI Governance</h2>
+
+            <h3>What is AI governance?</h3>
+            <p>AI governance is the system of accountability, controls, and evidence that ensures AI can be used in professional workflows without creating unmanaged risk.</p>
+
+            <h3>When is AI governance required?</h3>
+            <p>AI governance is required whenever AI touches sensitive data, regulated communications, official records, or professional judgment — especially in regulated industries.</p>
+
+            <h3>Is AI governance the same as AI ethics?</h3>
+            <p>No. AI ethics focuses on values. AI governance focuses on controls, accountability, and defensibility.</p>
+
+            <h3>What happens if AI is not governed?</h3>
+            <p>Ungoverned AI creates invisible liability, audit failure, professional exposure, and loss of trust — even when the AI output is accurate.</p>
+
+            <h3>Who is responsible when AI is used?</h3>
+            <p>Responsibility always remains human. Governance ensures accountability is clearly assigned and supported by evidence.</p>
+        </article>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>iGovernAI™</h3>
+                <p>Govern Before You Innovate™</p>
+            </div>
+            <div class="footer-section">
+                <h3>Offering</h3>
+                <a href="../index.html#lead-capture">AI Audit</a>
+                <a href="../index.html#how-it-works">How It Works</a>
+                <a href="../index.html#what-you-get">What We Deliver</a>
+                <a href="../index.html#why-different">Why We're Different</a>
+                <a href="../index.html#who-empowers">Who We Empower</a>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <a href="../privacy-policy.html">Privacy Policy</a>
+                <a href="../terms-of-service.html">Terms of Service</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <a href="mailto:contact@igovernai.com">contact@igovernai.com</a>
+                <a href="../index.html#lead-capture">Request Information</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 iGovernAI™. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
+

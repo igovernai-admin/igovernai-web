@@ -883,6 +883,194 @@
                 height: 45px;
             }
         }
+
+        /* Blog/Insights Section */
+        .blog-section {
+            background: var(--bg-white);
+            padding: 5rem 2rem;
+        }
+
+        .blog-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: var(--secondary-color);
+        }
+
+        .blog-section .section-subtitle {
+            text-align: center;
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            grid-auto-flow: dense;
+        }
+
+        .blog-card {
+            background: var(--bg-white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .blog-card-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+        }
+
+        .blog-card.large .blog-card-image {
+            height: 600px;
+            object-fit: cover;
+            object-position: center 10%;
+        }
+
+        .blog-card.medium .blog-card-image {
+            height: 300px;
+        }
+
+        .blog-card-content {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .blog-card-category {
+            font-size: 0.85rem;
+            color: #b9913f;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .blog-card-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .blog-card.large .blog-card-title {
+            font-size: 1.6rem;
+        }
+
+        .blog-card-excerpt {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .blog-card-date {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .blog-card.large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .blog-card.medium {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .blog-card.small {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        @media (max-width: 1024px) {
+            .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .blog-card.large {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+
+            .blog-card.large .blog-card-image {
+                height: 450px;
+                object-fit: cover;
+            }
+
+            .blog-card.medium {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
+            .blog-card.medium .blog-card-image {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .blog-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .blog-section h2 {
+                font-size: 2rem;
+            }
+
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .blog-card.large,
+            .blog-card.medium,
+            .blog-card.small {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
+            .blog-card-image,
+            .blog-card.medium .blog-card-image {
+                height: 220px;
+            }
+
+            .blog-card.large .blog-card-image {
+                height: 350px;
+                object-fit: cover;
+            }
+
+            .blog-card-title {
+                font-size: 1.2rem;
+            }
+
+            .blog-card.large .blog-card-title {
+                font-size: 1.3rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -899,6 +1087,7 @@
                 <a href="#what-you-get">What We Deliver</a>
                 <a href="#why-different">Why We're Different</a>
                 <a href="#who-empowers">Who We Empower</a>
+                <a href="#insights">Insights</a>
             </div>
             <a href="#lead-capture" class="nav-cta">Get Started</a>
         </nav>
@@ -1286,6 +1475,114 @@
                     Complete the AI Audit to understand where AI is safe to move—and where it isn't yet.
                 </p>
                 <a href="#lead-capture" class="hero-cta" style="border-color: #ffffff; color: #ffffff; background: transparent;">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog/Insights Section -->
+    <section class="blog-section" id="insights">
+        <div class="container">
+            <h2>Insights & Articles</h2>
+            <p class="section-subtitle">Expert perspectives on AI governance, operational control, and innovation at scale.</p>
+            <div class="blog-grid">
+                <!-- Large Featured Article -->
+                <a href="articles/building-operational-control-ai-scale.html" class="blog-card large">
+                    <img src="assets/images/whitepaper.png" alt="AI Governance Framework" class="blog-card-image" onerror="this.style.display='none';">
+                    <div class="blog-card-content">
+                        <div class="blog-card-category">Featured</div>
+                        <h3 class="blog-card-title">Building Operational Control for AI at Scale</h3>
+                        <p class="blog-card-excerpt">Learn how organizations are embedding governance directly into workflows, ensuring AI remains visible, bounded, and accountable as it scales across teams and processes.</p>
+                        <div class="blog-card-date">February 18, 2026</div>
+                    </div>
+                </a>
+
+                <!-- Small Article -->
+                <a href="articles/identifying-hidden-ai-dependencies.html" class="blog-card small">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/b9913f?text=AI+Risk" alt="AI Risk Management" class="blog-card-image" onerror="this.style.display='none';">
+                    <div class="blog-card-content">
+                        <div class="blog-card-category">Risk Management</div>
+                        <h3 class="blog-card-title">You Didn't Mean to Build a Risk Engine</h3>
+                        <p class="blog-card-excerpt">The Innovator Standard of Care for AI Governance in Regulated Workflows. Protect those you serve, including yourself.</p>
+                        <div class="blog-card-date">February 16, 2026</div>
+                    </div>
+                </a>
+
+                <!-- Small Article -->
+                <a href="articles/managing-ai-risk-in-production.html" class="blog-card small">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/b9913f?text=Production+Risk" alt="AI Production Risk" class="blog-card-image" onerror="this.style.display='none';">
+                    <div class="blog-card-content">
+                        <div class="blog-card-category">Risk Management</div>
+                        <h3 class="blog-card-title">Managing AI Risk in Production Environments</h3>
+                        <p class="blog-card-excerpt">Understanding how to maintain control and visibility as AI systems move from experimentation to production deployment.</p>
+                        <div class="blog-card-date">January 12, 2026</div>
+                    </div>
+                </a>
+
+                <!-- Small Article -->
+                <a href="articles/enabling-innovation-without-chaos.html" class="blog-card small">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/b9913f?text=Innovation" alt="AI Innovation" class="blog-card-image" onerror="this.style.display='none';">
+                    <div class="blog-card-content">
+                        <div class="blog-card-category">Innovation</div>
+                        <h3 class="blog-card-title">Enabling Innovation Without Creating Chaos</h3>
+                        <p class="blog-card-excerpt">How to give innovators freedom to experiment while enforcing boundaries and ownership.</p>
+                        <div class="blog-card-date">January 8, 2026</div>
+                    </div>
+                </a>
+
+                <!-- Small Article -->
+                <a href="articles/governance-built-for-workflows.html" class="blog-card small">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/b9913f?text=Workflows" alt="AI Workflows" class="blog-card-image" onerror="this.style.display='none';">
+                    <div class="blog-card-content">
+                        <div class="blog-card-category">Operations</div>
+                        <h3 class="blog-card-title">Governance Built for Workflows, Not Documents</h3>
+                        <p class="blog-card-excerpt">Moving beyond policy theater to operational control that lives where AI is actually used.</p>
+                        <div class="blog-card-date">January 5, 2026</div>
+                    </div>
+                </a>
+
+                <!-- Medium Article -->
+                <a href="articles/clear-ownership-accountability.html" class="blog-card medium">
+                    <img src="https://via.placeholder.com/400x300/1a1a1a/b9913f?text=Ownership" alt="AI Ownership" class="blog-card-image" onerror="this.style.display='none';">
+                    <div class="blog-card-content">
+                        <div class="blog-card-category">Governance</div>
+                        <h3 class="blog-card-title">Clear Ownership and Real Accountability in AI Operations</h3>
+                        <p class="blog-card-excerpt">Assigning ownership by function and workflow, not by title. Every AI use case needs a human owner when stakes exist.</p>
+                        <div class="blog-card-date">January 3, 2026</div>
+                    </div>
+                </a>
+
+                <!-- Small Article -->
+                <a href="articles/scaling-ai-without-losing-trust.html" class="blog-card small">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/b9913f?text=Scaling" alt="AI Scaling" class="blog-card-image" onerror="this.style.display='none';">
+                    <div class="blog-card-content">
+                        <div class="blog-card-category">Strategy</div>
+                        <h3 class="blog-card-title">Scaling AI Without Losing Trust or Control</h3>
+                        <p class="blog-card-excerpt">The operational authority layer organizations need to govern AI across the enterprise.</p>
+                        <div class="blog-card-date">December 28, 2025</div>
+                    </div>
+                </a>
+
+                <!-- Small Article -->
+                <a href="articles/what-to-expect-from-ai-audit.html" class="blog-card small">
+                    <img src="https://via.placeholder.com/400x250/1a1a1a/b9913f?text=Audit" alt="AI Audit" class="blog-card-image" onerror="this.style.display='none';">
+                    <div class="blog-card-content">
+                        <div class="blog-card-category">Best Practices</div>
+                        <h3 class="blog-card-title">What to Expect from Your AI Audit</h3>
+                        <p class="blog-card-excerpt">A focused operational review designed to surface reality and produce clarity about your AI posture.</p>
+                        <div class="blog-card-date">December 25, 2025</div>
+                    </div>
+                </a>
+
+                <!-- Medium Article -->
+                <a href="articles/risk-based-controls.html" class="blog-card medium">
+                    <img src="https://via.placeholder.com/400x300/1a1a1a/b9913f?text=Controls" alt="AI Controls" class="blog-card-image" onerror="this.style.display='none';">
+                    <div class="blog-card-content">
+                        <div class="blog-card-category">Implementation</div>
+                        <h3 class="blog-card-title">Risk-Based Controls Instead of One-Size-Fits-All Rules</h3>
+                        <p class="blog-card-excerpt">How to implement guardrails that enable innovation while preventing AI drift before it becomes invisible dependence.</p>
+                        <div class="blog-card-date">December 20, 2025</div>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
